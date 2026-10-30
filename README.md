@@ -1,7 +1,6 @@
-[README.md](https://github.com/user-attachments/files/34170292/README.md)
 # 云上仙宫视觉与视频工作流Skill
 
-`roths-cloud-palace-mj` 是一个用于创作“云上仙宫／天宫巨物美学”的 Codex Skill，能够把东方空间秩序、超大尺度建筑、云海自然奇观和神兽礼器，转译成 Midjourney 英文提示词与图生视频动态提示词。
+`roths-cloud-palace-mj` 是一个用于创作“云上仙宫／天宫巨物美学”的 Agent Skill，能够把东方空间秩序、超大尺度建筑、云海自然奇观和神兽礼器，转译成 Midjourney 英文提示词与图生视频动态提示词。Codex、Claude Code、Cursor、CodeBuddy 等 70+ 支持 Skill 的 Agent 都能直接用。
 
 ## 这个 Skill 能做什么
 
@@ -30,45 +29,38 @@
 
 ## 如何安装
 
-先从 [GitHub Releases](https://github.com/Roths-yang/roths-cloud-palace-mj/releases) 下载：
+一条命令，不需要下载 ZIP，也不用改任何路径：
 
-`roths-cloud-palace-mj-v2.zip`
-
-### 方法一：在终端安装
-
-在 ZIP 文件所在目录打开 Windows PowerShell，复制运行：
-
-```powershell
-$skillsDir = if ($env:CODEX_HOME) {
-    Join-Path $env:CODEX_HOME "skills"
-} else {
-    Join-Path $HOME ".codex\skills"
-}
-
-$tempDir = Join-Path $env:TEMP "roths-cloud-palace-mj-install"
-
-Remove-Item $tempDir -Recurse -Force -ErrorAction SilentlyContinue
-Expand-Archive -LiteralPath ".\roths-cloud-palace-mj-v2.zip" -DestinationPath $tempDir -Force
-New-Item -ItemType Directory -Path $skillsDir -Force | Out-Null
-Copy-Item (Join-Path $tempDir "roths-cloud-palace-mj") `
-    -Destination $skillsDir -Recurse -Force
-
-Test-Path (Join-Path $skillsDir "roths-cloud-palace-mj\SKILL.md")
+```bash
+npx skills add Roths-yang/roths-cloud-palace-mj -g
 ```
 
-最后返回 `True`，说明文件已经安装完成。
+运行后按提示选择目标 Agent 即可——skills CLI 支持 Codex、Claude Code、Cursor、CodeBuddy 等 70+ 通用 Agent，技能会装进所选 Agent 的用户级 skills 目录，所有项目都能调用。需要 Node.js 22.20 或更高版本，Windows / macOS / Linux 通用。
 
-### 方法二：在 Codex 中安装
+### 交给 AI Agent 安装
 
-重新开始一个 Codex 会话，附上 ZIP 文件，并复制这段提示词：
+把这句话发给任意 AI Agent：
 
 ```text
-请安装附件中的 roths-cloud-palace-mj-v2.zip：解压后把 roths-cloud-palace-mj 文件夹放入我的个人 Skills 目录，并检查其中的 SKILL.md 是否能被识别。
+帮我安装 roths-cloud-palace-mj 技能。执行 npx skills add Roths-yang/roths-cloud-palace-mj -g，装完后检查 roths-cloud-palace-mj 目录下的 SKILL.md 和 references/ 是否存在。
 ```
+
+### 更新与卸载
+
+```bash
+npx skills update roths-cloud-palace-mj -g -y   # 更新到最新版本
+npx skills remove roths-cloud-palace-mj -g -y   # 卸载
+```
+
+### 离线安装（没有 Node 环境时）
+
+1. 从 [GitHub Releases](https://github.com/Roths-yang/roths-cloud-palace-mj/releases) 下载 `roths-cloud-palace-mj-v2.zip`；
+2. 解压后把 `roths-cloud-palace-mj` 文件夹整个放进所用 Agent 的用户级 skills 目录（Codex 为 `~/.agents/skills/`，Claude Code 为 `~/.claude/skills/`）；
+3. 重启 Agent，能在技能列表里看到 `roths-cloud-palace-mj` 即安装成功。
 
 ## 安装后如何调用
 
-在新的 Codex 对话中输入：
+在新的 Agent 对话中输入：
 
 ```text
 请使用 roths-cloud-palace-mj Skill，选择 B 方向：巨大的米白色仙界城墙悬浮在云海之上，瀑布从城墙倾泻，一个极小的白衣仙人立在远处。生成 2 版 Midjourney 英文提示词。
@@ -80,7 +72,9 @@ Test-Path (Join-Path $skillsDir "roths-cloud-palace-mj\SKILL.md")
 请使用 roths-cloud-palace-mj Skill，选择 H 方向，生成一条表现“草原连续折起形成巨大山墙，仙门从山体中生长出来”的 Midjourney 英文提示词。
 ```
 
-## ZIP 文件结构
+## 技能目录结构
+
+技能装进 Skills 目录（如 `~/.agents/skills/`）后，结构如下：
 
 ```text
 roths-cloud-palace-mj/
@@ -100,6 +94,7 @@ roths-cloud-palace-mj/
 | 文件或目录 | 用途 |
 |---|---|
 | [`SKILL.md`](SKILL.md) | Skill 主入口，包含视觉规则、A–J 方向、提示词格式、工作流和终检清单。 |
+| [`README.md`](README.md) | 说明文档，介绍 Skill 能力、十个方向对照、安装与调用方法、目录结构。 |
 | [`evals/evals.json`](evals/evals.json) | Skill 评测用例，覆盖方向识别、巨物尺度、神兽、地貌联想、图生视频和剪辑包装。 |
 | [`references/directions.md`](references/directions.md) | 十个云上仙宫方向的详细说明，包括母题、大形、构图、色材和常见误区。 |
 | [`references/edit-release.md`](references/edit-release.md) | 镜头排序、封面选择和发布文案的判断方法。 |
