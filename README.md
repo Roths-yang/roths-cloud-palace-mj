@@ -85,6 +85,7 @@ Test-Path (Join-Path $skillsDir "roths-cloud-palace-mj\SKILL.md")
 ```text
 roths-cloud-palace-mj/
 ├── SKILL.md
+├── README.md
 ├── evals/
 │   └── evals.json
 └── references/
